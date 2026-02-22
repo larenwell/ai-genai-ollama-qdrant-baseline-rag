@@ -1,0 +1,25 @@
+Objective:
+1. Text Splitting: The primary objective is to split large blocks of text (from PDF documents) into smaller chunks. 
+This is important for handling and processing text efficiently, especially when dealing with natural language processing (NLP) 
+tasks or feeding the text into vector databases like Qdrant for retrieval purposes.
+
+Breakdown of the Code:
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len,
+)
+
+for doc in documents:
+    chunks = text_splitter.split_text(doc.page_content)
+    all_chunks.extend(chunks)
+
+- 'text_splitter': This is an instance of the RecursiveCharacterTextSplitter class.
+- 'chunk_size=1000': This parameter sets the maximum number of characters for each chunk of text. In this case, each chunk will contain up to 1000 characters.
+- 'chunk_overlap=200': This parameter sets the number of characters that will overlap between consecutive chunks. Here, each chunk will overlap the previous chunk by 200 characters. Overlapping helps in maintaining context across chunks, which is especially useful for NLP tasks.
+- 'length_function=len': This parameter specifies the function to use for calculating the length of the chunks. The default is len, which calculates the length based on the number of characters.
+
+- 'for doc in documents': This loop iterates over each document loaded by the PyPDFLoader. Each document is processed individually.
+- 'chunks = text_splitter.split_text(doc.page_content)': This line splits the content of the current document (doc.page_content) into smaller chunks using the text_splitter instance. The split_text method divides the document's text into chunks based on the specified chunk_size and chunk_overlap.
+- 'all_chunks.extend(chunks)': This line adds the newly created chunks to the all_chunks list. The extend method appends each element of the chunks list to all_chunks, thereby accumulating all the chunks from all documents.
